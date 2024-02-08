@@ -1,4 +1,4 @@
-package com.neronguyen.psychicmemory.ui.theme
+package com.neronguyen.psychicmemory.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
