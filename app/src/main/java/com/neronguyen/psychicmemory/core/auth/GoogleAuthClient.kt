@@ -33,11 +33,6 @@ class GoogleAuthClient(
     private val _currentUser = MutableStateFlow<DomainUserData?>(null)
     val currentUser = _currentUser.asStateFlow()
 
-    init {
-        updateCurrentUser()
-    }
-
-
     suspend fun getSignInIntent(): IntentSender? {
         val result = oneTapClient.beginSignIn(buildSignInRequest()).await()
         return result?.pendingIntent?.intentSender
@@ -65,6 +60,17 @@ class GoogleAuthClient(
         updateCurrentUser()
     }
 
+     suspend fun updateCurrentUser() {
+        _currentUser.value = auth.currentUser?.run {
+            DomainUserData(
+                userId = uid,
+                username = displayName,
+                profilePictureUrl = photoUrl?.toString(),
+                token = getIdToken(false).await().token.orEmpty()
+            )
+        }
+    }
+
     private suspend fun signInWithIntent(intent: Intent) {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
@@ -84,14 +90,4 @@ class GoogleAuthClient(
         )
         .setAutoSelectEnabled(true)
         .build()
-
-    private fun updateCurrentUser() {
-        _currentUser.value = auth.currentUser?.run {
-            DomainUserData(
-                userId = uid,
-                username = displayName,
-                profilePictureUrl = photoUrl?.toString()
-            )
-        }
-    }
 }

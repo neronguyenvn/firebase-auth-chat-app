@@ -1,5 +1,6 @@
 package com.neronguyen.psychicmemory.feature.auth
 
+import android.util.Log
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -29,6 +31,11 @@ fun AuthRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val authLauncher = googleAuthClient.rememberGoogleAuthLauncher()
+
+    LaunchedEffect(Unit) {
+        viewModel.updateAuthUser()
+    }
+
 
     Box(Modifier.fillMaxSize().padding(16.dp), Alignment.Center) {
         if (!isAlreadySignedIn) {
@@ -66,6 +73,7 @@ fun ProfileContent(userData: UserData, onSignOutClick: () -> Unit) {
             appendLine(userData.userId)
             appendLine(userData.username)
             appendLine(userData.profilePictureUrl)
+            Log.d("AuthScreen", userData.token.orEmpty())
         })
         Button(onClick = onSignOutClick) {
             Text("Sign Out")
