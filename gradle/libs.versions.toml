@@ -3,25 +3,32 @@ androidGradlePlugin = "8.2.2"
 androidxActivity = "1.8.2"
 androidxComposeBom = "2024.01.00"
 androidxLifecycle = "2.7.0"
+circuit = "0.19.1"
 firebaseBom = "32.7.1"
 gmsPlugin = "4.4.0"
 googleAuth = "20.7.0"
 koinBom = "3.6.0-wasm-alpha2"
 kotlin = "1.9.0"
+ktor = "3.0.0-beta-1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+circuit-foundation = { group = "com.slack.circuit", name = "circuit-foundation", version.ref = "circuit"}
 google-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleAuth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom"}
-koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose"}
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor"}
+ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+
 

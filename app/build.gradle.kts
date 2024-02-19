@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.gms)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -26,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -50,9 +51,16 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.runtimeCompose)
+
+    implementation(libs.circuit.foundation)
+
     implementation(libs.google.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.androidx.compose)
+
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.websockets)
 }

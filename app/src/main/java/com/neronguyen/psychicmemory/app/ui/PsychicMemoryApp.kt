@@ -1,19 +1,21 @@
 package com.neronguyen.psychicmemory.app.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
-import com.neronguyen.psychicmemory.feature.auth.AuthRoute
+import com.neronguyen.psychicmemory.feature.auth.AuthScreen
+import com.slack.circuit.backstack.rememberSaveableBackStack
+import com.slack.circuit.foundation.Circuit
+import com.slack.circuit.foundation.CircuitCompositionLocals
+import com.slack.circuit.foundation.NavigableCircuitContent
+import com.slack.circuit.foundation.rememberCircuitNavigator
 import org.koin.compose.koinInject
 
 @Composable
-fun PsychicMemoryApp(
-    googleAuthClient: GoogleAuthClient = koinInject(),
-    appState: PsychicMemoryAppState = rememberPsychicMemoryAppState(googleAuthClient)
-) {
-    val isAlreadySignedIn by appState.isAlreadySignedIn.collectAsStateWithLifecycle()
-    AuthRoute(
-        isAlreadySignedIn = isAlreadySignedIn,
-    )
+fun PsychicMemoryApp(circuit: Circuit = koinInject()) {
+
+    val backStack = rememberSaveableBackStack(root = AuthScreen)
+    val navigator = rememberCircuitNavigator(backStack)
+
+    CircuitCompositionLocals(circuit) {
+        NavigableCircuitContent(navigator = navigator, backStack = backStack)
+    }
 }
