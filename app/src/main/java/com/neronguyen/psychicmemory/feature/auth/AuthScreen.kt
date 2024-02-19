@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
-import com.neronguyen.psychicmemory.core.model.UserData
+import com.neronguyen.psychicmemory.core.domain.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -50,7 +50,7 @@ fun AuthRoute(
                 }
             }
         } else {
-            ProfileContent(userData = uiState!!.userData!!) {
+            ProfileContent(user = uiState!!.user!!) {
                 coroutineScope.launch {
                     googleAuthClient.signOut()
                 }
@@ -67,13 +67,13 @@ fun SignInButton(onSignInClick: () -> Unit) {
 }
 
 @Composable
-fun ProfileContent(userData: UserData, onSignOutClick: () -> Unit) {
+fun ProfileContent(user: User, onSignOutClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = buildString {
-            appendLine(userData.userId)
-            appendLine(userData.username)
-            appendLine(userData.profilePictureUrl)
-            Log.d("AuthScreen", userData.token.orEmpty())
+            appendLine(user.userId)
+            appendLine(user.username)
+            appendLine(user.profilePictureUrl)
+            Log.d("AuthScreen", user.token.orEmpty())
         })
         Button(onClick = onSignOutClick) {
             Text("Sign Out")

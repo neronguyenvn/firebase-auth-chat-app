@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import com.neronguyen.psychicmemory.core.model.UserData as DomainUserData
+import com.neronguyen.psychicmemory.core.domain.model.User as DomainUser
 
 class GoogleAuthClient(
     private val context: Context,
@@ -30,7 +30,7 @@ class GoogleAuthClient(
 ) {
     private val auth = Firebase.auth
 
-    private val _currentUser = MutableStateFlow<DomainUserData?>(null)
+    private val _currentUser = MutableStateFlow<DomainUser?>(null)
     val currentUser = _currentUser.asStateFlow()
 
     suspend fun getSignInIntent(): IntentSender? {
@@ -62,7 +62,7 @@ class GoogleAuthClient(
 
      suspend fun updateCurrentUser() {
         _currentUser.value = auth.currentUser?.run {
-            DomainUserData(
+            DomainUser(
                 userId = uid,
                 username = displayName,
                 profilePictureUrl = photoUrl?.toString(),
