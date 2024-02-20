@@ -9,19 +9,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.neronguyen.psychicmemory.R
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
-import com.neronguyen.psychicmemory.core.domain.model.User as DomainUser
 
 class GoogleAuthClient(
     private val context: Context,
-    private val oneTapClient: SignInClient
+    private val oneTapClient: SignInClient,
 ) {
-    private val auth = Firebase.auth
-
-    private val _currentUser = MutableStateFlow<DomainUser?>(null)
-    val currentUser = _currentUser.asStateFlow()
+    val auth = Firebase.auth
 
     suspend fun getSignInIntent(): IntentSender? {
         val result = oneTapClient.beginSignIn(buildSignInRequest()).await()
@@ -33,24 +27,11 @@ class GoogleAuthClient(
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         auth.signInWithCredential(googleCredentials).await()
-        updateCurrentUser()
     }
 
     suspend fun signOut() {
         oneTapClient.signOut().await()
         auth.signOut()
-        updateCurrentUser()
-    }
-
-    private suspend fun updateCurrentUser() {
-        _currentUser.value = auth.currentUser?.run {
-            DomainUser(
-                userId = uid,
-                username = displayName,
-                profilePictureUrl = photoUrl?.toString(),
-                token = getIdToken(true).await().token.orEmpty()
-            )
-        }
     }
 
     private fun buildSignInRequest() = BeginSignInRequest.builder()
