@@ -1,14 +1,15 @@
 [versions]
 androidGradlePlugin = "8.2.2"
 androidxActivity = "1.8.2"
-androidxComposeBom = "2024.01.00"
+androidxComposeBom = "2024.02.00"
+androidxComposeCompiler = "1.5.9"
 androidxLifecycle = "2.7.0"
 circuit = "0.19.1"
-firebaseBom = "32.7.1"
-gmsPlugin = "4.4.0"
-googleAuth = "20.7.0"
+firebaseBom = "32.7.2"
+gmsPlugin = "4.4.1"
+googleAuth = "21.0.0"
 koinBom = "3.6.0-wasm-alpha2"
-kotlin = "1.9.0"
+kotlin = "1.9.22"
 ktor = "3.0.0-beta-1"
 
 [libraries]
