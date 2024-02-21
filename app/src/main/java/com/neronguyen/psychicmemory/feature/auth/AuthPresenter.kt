@@ -8,7 +8,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
+import com.neronguyen.psychicmemory.core.firebase.auth.GoogleAuthClient
 import com.neronguyen.psychicmemory.feature.auth.AuthScreen.Event.SignInClicked
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen
 import com.slack.circuit.runtime.CircuitContext

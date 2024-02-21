@@ -1,4 +1,4 @@
-package com.neronguyen.psychicmemory.core.auth
+package com.neronguyen.psychicmemory.core.firebase.auth
 
 import android.content.Context
 import android.content.Intent

@@ -1,8 +1,8 @@
-package com.neronguyen.psychicmemory.core.auth.di
+package com.neronguyen.psychicmemory.core.firebase.auth.di
 
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
+import com.neronguyen.psychicmemory.core.firebase.auth.GoogleAuthClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
