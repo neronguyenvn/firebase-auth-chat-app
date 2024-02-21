@@ -1,20 +1,15 @@
 package com.neronguyen.psychicmemory.app.ui
 
-import org.koin.compose.koinInject
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
-fun rememberPsychicMemoryAppState(
-    googleAuthClient: GoogleAuthClient = koinInject(),
-): PsychicMemoryAppState {
-    return remember(googleAuthClient) {
-        PsychicMemoryAppState(googleAuthClient)
-    }
+fun rememberPsychicMemoryAppState(): PsychicMemoryAppState {
+    return remember { PsychicMemoryAppState() }
 }
 
-class PsychicMemoryAppState(googleAuthClient: GoogleAuthClient) {
-    val isAlreadySignIn = googleAuthClient.auth.currentUser != null
+class PsychicMemoryAppState {
+    val isAlreadySignIn = Firebase.auth.currentUser != null
 }
