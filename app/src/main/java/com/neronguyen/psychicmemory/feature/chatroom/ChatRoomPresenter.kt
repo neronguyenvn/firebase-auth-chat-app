@@ -7,6 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.neronguyen.psychicmemory.core.data.ChatRepository
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.ConnectSocket
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.InputMessage
@@ -18,6 +20,7 @@ import com.slack.circuit.runtime.screen.Screen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ChatRoomPresenter(
     private val chatRepository: ChatRepository
@@ -36,6 +39,9 @@ class ChatRoomPresenter(
         ) { event ->
             when (event) {
                 ConnectSocket -> coroutineScope.launch {
+                    launch {
+                        Firebase.messaging.subscribeToTopic("chat").await()
+                    }
                     chatRepository.connectToSocket()
                         .onEach { message -> messages.add(0, message) }
                         .launchIn(coroutineScope)

@@ -21,6 +21,7 @@ circuit-foundation = { group = "com.slack.circuit", name = "circuit-foundation",
 google-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleAuth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging"}
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -32,5 +33,3 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-
-
