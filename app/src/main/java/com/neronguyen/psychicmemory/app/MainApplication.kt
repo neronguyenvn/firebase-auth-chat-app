@@ -2,10 +2,8 @@ package com.neronguyen.psychicmemory.app
 
 import android.app.Application
 import com.neronguyen.psychicmemory.app.di.appModule
-import com.neronguyen.psychicmemory.app.di.circuitModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 
 class MainApplication : Application() {
@@ -16,7 +14,6 @@ class MainApplication : Application() {
             androidLogger()
             androidContext(this@MainApplication)
             modules(appModule)
-            modules(circuitModule)
         }
     }
 }

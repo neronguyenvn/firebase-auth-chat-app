@@ -19,7 +19,12 @@ val circuitModule = module {
                     modifier = modifier
                 )
             }
-            .addPresenterFactories(listOf(AuthPresenter.Factory(get()), ChatRoomPresenter.Factory()))
+            .addPresenterFactories(
+                listOf(
+                    AuthPresenter.Factory(get()),
+                    ChatRoomPresenter.Factory(get())
+                )
+            )
             .build()
     }
 }

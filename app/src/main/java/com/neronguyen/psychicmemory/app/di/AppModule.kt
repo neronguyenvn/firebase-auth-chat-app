@@ -1,12 +1,17 @@
 package com.neronguyen.psychicmemory.app.di
 
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
-import org.koin.android.ext.koin.androidContext
+import com.neronguyen.psychicmemory.core.auth.di.authModule
+import com.neronguyen.psychicmemory.core.common.coroutine.coroutineModule
+import com.neronguyen.psychicmemory.core.data.di.dataModule
+import com.neronguyen.psychicmemory.core.network.di.networkModule
 import org.koin.dsl.module
 
 val appModule = module {
-    single<SignInClient> { Identity.getSignInClient(androidContext()) }
-    single { GoogleAuthClient(androidContext(), get()) }
+    includes(
+        coroutineModule,
+        authModule,
+        networkModule,
+        dataModule,
+        circuitModule
+    )
 }
