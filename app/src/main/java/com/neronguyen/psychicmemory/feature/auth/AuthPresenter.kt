@@ -7,18 +7,16 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neronguyen.psychicmemory.core.auth.GoogleAuthClient
 import com.neronguyen.psychicmemory.feature.auth.AuthScreen.Event.SignInClicked
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen
 import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.popUntil
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class AuthPresenter(
@@ -31,10 +29,7 @@ class AuthPresenter(
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
         val launcher = rememberGoogleAuthLauncher(coroutineScope)
 
-        val isAlreadySignIn by googleAuthClient.currentUser.map { it != null }
-            .collectAsStateWithLifecycle(false)
-
-        return AuthScreen.State(isAlreadySignIn) { event ->
+        return AuthScreen.State { event ->
             when (event) {
                 SignInClicked -> coroutineScope.launch {
                     val intentSender = googleAuthClient.getSignInIntent()
@@ -56,7 +51,7 @@ class AuthPresenter(
             if (result.resultCode == ComponentActivity.RESULT_OK) {
                 coroutineScope.launch {
                     googleAuthClient.signInWithIntent(intent = result.data ?: return@launch)
-                    navigator.goTo(ChatRoomScreen)
+                    navigator.resetRoot(ChatRoomScreen)
                 }
             }
         }
