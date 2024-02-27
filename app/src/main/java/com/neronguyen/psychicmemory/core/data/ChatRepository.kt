@@ -1,5 +1,6 @@
 package com.neronguyen.psychicmemory.core.data
 
+import com.neronguyen.psychicmemory.core.model.UserMessage
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
@@ -10,5 +11,5 @@ interface ChatRepository {
 
     suspend fun disconnect()
 
-    suspend fun getChatHistory(): List<String>
+    suspend fun getChatHistory(): List<UserMessage>
 }

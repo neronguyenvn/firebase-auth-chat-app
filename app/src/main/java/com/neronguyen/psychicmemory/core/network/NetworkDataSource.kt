@@ -1,5 +1,6 @@
 package com.neronguyen.psychicmemory.core.network
 
+import com.neronguyen.psychicmemory.core.model.UserMessage
 import kotlinx.coroutines.flow.Flow
 
 
@@ -11,5 +12,5 @@ interface NetworkDataSource {
 
     suspend fun disconnectSocket()
 
-    suspend fun getChatHistory(url: String, token: String): List<String>
+    suspend fun getChatHistory(url: String, token: String): List<UserMessage>
 }

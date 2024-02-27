@@ -1,5 +1,6 @@
 package com.neronguyen.psychicmemory.core.network.ktor
 
+import com.neronguyen.psychicmemory.core.model.UserMessage
 import com.neronguyen.psychicmemory.core.network.NetworkDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -45,7 +46,7 @@ class KtorNetwork(private val httpClient: HttpClient) : NetworkDataSource {
         webSocket?.close()
     }
 
-    override suspend fun getChatHistory(url: String, token: String): List<String> {
+    override suspend fun getChatHistory(url: String, token: String): List<UserMessage> {
         return httpClient.get(url) {
             header(
                 "Authorization",

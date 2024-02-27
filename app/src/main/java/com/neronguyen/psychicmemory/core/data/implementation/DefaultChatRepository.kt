@@ -3,6 +3,7 @@ package com.neronguyen.psychicmemory.core.data.implementation
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.neronguyen.psychicmemory.core.data.ChatRepository
+import com.neronguyen.psychicmemory.core.model.UserMessage
 import com.neronguyen.psychicmemory.core.network.NetworkDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +38,7 @@ class DefaultChatRepository(
         }
     }
 
-    override suspend fun getChatHistory(): List<String> {
+    override suspend fun getChatHistory(): List<UserMessage> {
         return withContext(ioDispatcher) {
             networkDataSource.getChatHistory(
                 url = "http://192.168.1.5:8080/chatHistory",
