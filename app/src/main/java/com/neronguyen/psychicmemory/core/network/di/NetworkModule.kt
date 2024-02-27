@@ -12,15 +12,14 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 val networkModule = module {
+    single { Json { ignoreUnknownKeys = true } }
     single {
         HttpClient(CIO) {
             install(WebSockets) {
-                contentConverter = KotlinxWebsocketSerializationConverter(Json)
+                contentConverter = KotlinxWebsocketSerializationConverter(get<Json>())
             }
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
+                json(get())
             }
         }
     }
