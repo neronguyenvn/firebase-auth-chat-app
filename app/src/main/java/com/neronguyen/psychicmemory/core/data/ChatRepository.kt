@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
 
-    suspend fun connectToSocket(): Flow<String>
+    suspend fun connectToSocket(): Flow<UserMessage>
 
     suspend fun sendMessage(message: String)
 

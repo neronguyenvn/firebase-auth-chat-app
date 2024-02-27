@@ -17,7 +17,7 @@ class DefaultChatRepository(
 
     private suspend fun getToken() = Firebase.auth.currentUser!!.getIdToken(true).await().token!!
 
-    override suspend fun connectToSocket(): Flow<String> {
+    override suspend fun connectToSocket(): Flow<UserMessage> {
         return withContext(ioDispatcher) {
             networkDataSource.connectToSocket(
                 url = "ws://192.168.1.5:8080/chat",

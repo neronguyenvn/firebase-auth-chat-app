@@ -50,7 +50,12 @@ class ChatRoomPresenter(
                     val chatHistory = chatRepository.getChatHistory()
                     messages.addAll(0, chatHistory.map { "[${it.username}]: ${it.content}" })
                     chatRepository.connectToSocket()
-                        .onEach { message -> messages.add(0, message) }
+                        .onEach { message ->
+                            messages.add(
+                                0,
+                                "[${message.username}]: ${message.content}"
+                            )
+                        }
                         .launchIn(coroutineScope)
                 }
 

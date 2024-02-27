@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NetworkDataSource {
 
-    suspend fun connectToSocket(url: String, token: String): Flow<String>
+    suspend fun connectToSocket(url: String, token: String): Flow<UserMessage>
 
     suspend fun sendMessage(message: String)
 
