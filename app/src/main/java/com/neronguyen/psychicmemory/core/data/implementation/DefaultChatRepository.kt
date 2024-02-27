@@ -1,13 +1,14 @@
 package com.neronguyen.psychicmemory.core.data.implementation
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.neronguyen.psychicmemory.core.data.ChatRepository
-import com.neronguyen.psychicmemory.core.model.UserMessage
+import com.neronguyen.psychicmemory.core.firebase.util.currentUser
+import com.neronguyen.psychicmemory.core.firebase.util.getToken
+import com.neronguyen.psychicmemory.core.model.ChatMessage
 import com.neronguyen.psychicmemory.core.network.NetworkDataSource
+import com.neronguyen.psychicmemory.core.network.model.asExternalModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class DefaultChatRepository(
@@ -15,14 +16,13 @@ class DefaultChatRepository(
     private val ioDispatcher: CoroutineDispatcher
 ) : ChatRepository {
 
-    private suspend fun getToken() = Firebase.auth.currentUser!!.getIdToken(true).await().token!!
 
-    override suspend fun connectToSocket(): Flow<UserMessage> {
+    override suspend fun connectToSocket(): Flow<ChatMessage> {
         return withContext(ioDispatcher) {
             networkDataSource.connectToSocket(
                 url = "ws://192.168.1.5:8080/chat",
                 token = getToken()
-            )
+            ).map { it.asExternalModel(currentUser.id) }
         }
     }
 
@@ -38,12 +38,12 @@ class DefaultChatRepository(
         }
     }
 
-    override suspend fun getChatHistory(): List<UserMessage> {
+    override suspend fun getChatHistory(): List<ChatMessage> {
         return withContext(ioDispatcher) {
             networkDataSource.getChatHistory(
                 url = "http://192.168.1.5:8080/chatHistory",
                 token = getToken()
-            )
+            ).map { it.asExternalModel(currentUser.id) }
         }
     }
 }

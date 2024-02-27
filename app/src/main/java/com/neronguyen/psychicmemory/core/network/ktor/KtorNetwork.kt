@@ -1,7 +1,7 @@
 package com.neronguyen.psychicmemory.core.network.ktor
 
-import com.neronguyen.psychicmemory.core.model.UserMessage
 import com.neronguyen.psychicmemory.core.network.NetworkDataSource
+import com.neronguyen.psychicmemory.core.network.model.NetworkMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
@@ -22,7 +22,7 @@ class KtorNetwork(private val httpClient: HttpClient) : NetworkDataSource {
 
     private var webSocket: DefaultClientWebSocketSession? = null
 
-    override suspend fun connectToSocket(url: String, token: String): Flow<UserMessage> {
+    override suspend fun connectToSocket(url: String, token: String): Flow<NetworkMessage> {
         webSocket = httpClient.webSocketSession {
             url(url).apply {
                 header(
@@ -32,7 +32,7 @@ class KtorNetwork(private val httpClient: HttpClient) : NetworkDataSource {
             }
         }
         return webSocket?.incoming?.receiveAsFlow()
-            ?.map { webSocket?.converter!!.deserialize<UserMessage>(it) }
+            ?.map { webSocket?.converter!!.deserialize<NetworkMessage>(it) }
             ?: emptyFlow()
     }
 
@@ -44,7 +44,7 @@ class KtorNetwork(private val httpClient: HttpClient) : NetworkDataSource {
         webSocket?.close()
     }
 
-    override suspend fun getChatHistory(url: String, token: String): List<UserMessage> {
+    override suspend fun getChatHistory(url: String, token: String): List<NetworkMessage> {
         return httpClient.get(url) {
             header(
                 "Authorization",

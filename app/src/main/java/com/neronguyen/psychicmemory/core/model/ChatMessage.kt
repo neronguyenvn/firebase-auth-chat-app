@@ -1,11 +1,10 @@
 package com.neronguyen.psychicmemory.core.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class UserMessage(
-    val userId: String,
+data class ChatMessage(
     val username: String,
     val photoUrl: String,
     val content: String,
-)
+    val sender: Sender
+) {
+    enum class Sender { CURRENT_USER, OTHER }
+}
