@@ -48,24 +48,27 @@ android {
 }
 
 dependencies {
+    // Jetpack Compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.runtimeCompose)
-
+    // Circuit for MVI pattern
     implementation(libs.circuit.foundation)
-
+    // Google services
     implementation(libs.google.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.messaging)
-
+    // Koin for Dependency Injection
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.androidx.compose)
-
+    // Ktor for network
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.websockets)
     implementation(libs.ktor.client.contentNegotiation)
     implementation(libs.ktor.serialization.json)
+    // Coil for image loading
+    implementation(libs.coil.compose)
 }

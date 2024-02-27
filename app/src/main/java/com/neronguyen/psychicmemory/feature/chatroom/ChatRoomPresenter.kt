@@ -7,10 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.neronguyen.psychicmemory.core.data.ChatRepository
 import com.neronguyen.psychicmemory.core.firebase.auth.GoogleAuthClient
+import com.neronguyen.psychicmemory.core.model.toBusinessModel
 import com.neronguyen.psychicmemory.feature.auth.AuthScreen
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.ConnectSocket
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.InputMessage
@@ -37,8 +39,10 @@ class ChatRoomPresenter(
 
         val messages = remember { mutableStateListOf<String>() }
         var inputMessage by remember { mutableStateOf("") }
+        val currentUser = remember { Firebase.auth.currentUser!!.toBusinessModel() }
 
         return ChatRoomScreen.State(
+            currentUser = currentUser,
             messages = messages,
             inputMessage = inputMessage
         ) { event ->
