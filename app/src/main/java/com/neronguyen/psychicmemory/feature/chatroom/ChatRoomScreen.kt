@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -31,6 +32,7 @@ data object ChatRoomScreen : Screen {
         data object ConnectSocket : Event()
         data class InputMessage(val value: String) : Event()
         data class SendMessage(val message: String) : Event()
+        data object SignOut : Event()
     }
 }
 
@@ -41,6 +43,9 @@ fun ChatRoomUi(state: ChatRoomScreen.State, modifier: Modifier = Modifier) {
     }
 
     Column {
+        Button(onClick = { state.eventSink(ChatRoomScreen.Event.SignOut) }) {
+            Text("Sign Out")
+        }
         LazyColumn(modifier.weight(1f), reverseLayout = true) {
             items(state.messages) { text ->
                 Text(text = text)

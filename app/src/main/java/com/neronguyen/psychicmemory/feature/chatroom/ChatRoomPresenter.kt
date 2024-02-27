@@ -10,9 +10,12 @@ import androidx.compose.runtime.setValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.neronguyen.psychicmemory.core.data.ChatRepository
+import com.neronguyen.psychicmemory.core.firebase.auth.GoogleAuthClient
+import com.neronguyen.psychicmemory.feature.auth.AuthScreen
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.ConnectSocket
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.InputMessage
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.SendMessage
+import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.SignOut
 import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
@@ -23,7 +26,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class ChatRoomPresenter(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val googleAuthClient: GoogleAuthClient,
+    private val navigator: Navigator
 ) : Presenter<ChatRoomScreen.State> {
 
     @Composable
@@ -55,18 +60,26 @@ class ChatRoomPresenter(
                     inputMessage = ""
                     chatRepository.sendMessage(event.message)
                 }
+
+                is SignOut -> coroutineScope.launch {
+                    googleAuthClient.signOut()
+                    navigator.resetRoot(AuthScreen)
+                }
             }
         }
     }
 
-    class Factory(private val chatRepository: ChatRepository) : Presenter.Factory {
+    class Factory(
+        private val chatRepository: ChatRepository,
+        private val googleAuthClient: GoogleAuthClient
+    ) : Presenter.Factory {
         override fun create(
             screen: Screen,
             navigator: Navigator,
             context: CircuitContext
         ): Presenter<*>? {
             return when (screen) {
-                ChatRoomScreen -> ChatRoomPresenter(chatRepository)
+                ChatRoomScreen -> ChatRoomPresenter(chatRepository, googleAuthClient, navigator)
                 else -> null
             }
         }

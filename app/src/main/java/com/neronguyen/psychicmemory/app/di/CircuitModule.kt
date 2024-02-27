@@ -22,7 +22,7 @@ val circuitModule = module {
             .addPresenterFactories(
                 listOf(
                     AuthPresenter.Factory(get()),
-                    ChatRoomPresenter.Factory(get())
+                    ChatRoomPresenter.Factory(get(), get())
                 )
             )
             .build()
