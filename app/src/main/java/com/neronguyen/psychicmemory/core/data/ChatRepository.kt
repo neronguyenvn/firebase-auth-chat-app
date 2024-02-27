@@ -9,4 +9,6 @@ interface ChatRepository {
     suspend fun sendMessage(message: String)
 
     suspend fun disconnect()
+
+    suspend fun getChatHistory(): List<String>
 }

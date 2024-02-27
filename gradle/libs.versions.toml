@@ -1,16 +1,16 @@
 [versions]
 androidGradlePlugin = "8.2.2"
 androidxActivity = "1.8.2"
-androidxComposeBom = "2024.02.00"
+androidxComposeBom = "2024.02.01"
 androidxComposeCompiler = "1.5.9"
 androidxLifecycle = "2.7.0"
 circuit = "0.19.1"
 firebaseBom = "32.7.2"
 gmsPlugin = "4.4.1"
 googleAuth = "21.0.0"
-koinBom = "3.6.0-wasm-alpha2"
+koinBom = "3.5.3"
 kotlin = "1.9.22"
-ktor = "3.0.0-beta-1"
+ktor = "2.3.8"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -21,15 +21,18 @@ circuit-foundation = { group = "com.slack.circuit", name = "circuit-foundation",
 google-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleAuth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging"}
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
+ktor-client-contentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+

@@ -14,11 +14,13 @@ class DefaultChatRepository(
     private val ioDispatcher: CoroutineDispatcher
 ) : ChatRepository {
 
+    private suspend fun getToken() = Firebase.auth.currentUser!!.getIdToken(true).await().token!!
+
     override suspend fun connectToSocket(): Flow<String> {
         return withContext(ioDispatcher) {
             networkDataSource.connectToSocket(
-                url = "ws://192.168.1.2:8080/chat",
-                token = Firebase.auth.currentUser!!.getIdToken(true).await().token!!
+                url = "ws://192.168.1.5:8080/chat",
+                token = getToken()
             )
         }
     }
@@ -26,13 +28,21 @@ class DefaultChatRepository(
     override suspend fun sendMessage(message: String) {
         withContext(ioDispatcher) {
             networkDataSource.sendMessage(message)
-
         }
     }
 
     override suspend fun disconnect() {
         withContext(ioDispatcher) {
             networkDataSource.disconnectSocket()
+        }
+    }
+
+    override suspend fun getChatHistory(): List<String> {
+        return withContext(ioDispatcher) {
+            networkDataSource.getChatHistory(
+                url = "http://192.168.1.5:8080/chatHistory",
+                token = getToken()
+            )
         }
     }
 }

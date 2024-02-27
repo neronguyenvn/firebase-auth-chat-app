@@ -42,6 +42,8 @@ class ChatRoomPresenter(
                     launch {
                         Firebase.messaging.subscribeToTopic("chat").await()
                     }
+                    val chatHistory = chatRepository.getChatHistory()
+                    messages.addAll(0, chatHistory)
                     chatRepository.connectToSocket()
                         .onEach { message -> messages.add(0, message) }
                         .launchIn(coroutineScope)

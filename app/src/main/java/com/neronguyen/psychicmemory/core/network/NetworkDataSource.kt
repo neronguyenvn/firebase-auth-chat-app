@@ -10,4 +10,6 @@ interface NetworkDataSource {
     suspend fun sendMessage(message: String)
 
     suspend fun disconnectSocket()
+
+    suspend fun getChatHistory(url: String, token: String): List<String>
 }
