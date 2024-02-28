@@ -72,4 +72,6 @@ dependencies {
     implementation(libs.ktor.serialization.json)
     // Coil for image loading
     implementation(libs.coil.compose)
+    // Kotlinx libraries
+    implementation(libs.kotlinx.datetime)
 }
