@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -77,7 +77,7 @@ fun ChatRoomUi(state: ChatRoomScreen.State, modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(1f),
                 reverseLayout = true,
                 contentPadding = PaddingValues(
-                    start = 20.dp,
+                    start = 24.dp,
                     end = 16.dp,
                     top = 16.dp,
                     bottom = 16.dp
@@ -100,6 +100,7 @@ fun ChatRoomUi(state: ChatRoomScreen.State, modifier: Modifier = Modifier) {
                                     .withLocale(Locale.getDefault())
                                     .withZone(ZoneId.systemDefault())
                                     .format(message.timestamp.toJavaInstant()),
+                                style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.align(Alignment.Center)
                             )
                         }
@@ -109,14 +110,27 @@ fun ChatRoomUi(state: ChatRoomScreen.State, modifier: Modifier = Modifier) {
             }
             OutlinedTextField(
                 value = state.inputMessage,
-                onValueChange = { value ->
-                    state.eventSink(InputMessage(value))
-                },
+                onValueChange = { value -> state.eventSink(InputMessage(value)) },
+                placeholder = { Text(text = "Type Message") },
                 trailingIcon = {
-                    IconButton(onClick = { state.eventSink(ChatRoomScreen.Event.SendMessage(state.inputMessage)) }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "")
+                    TextButton(onClick = {
+                        state.eventSink(
+                            ChatRoomScreen.Event.SendMessage(
+                                state.inputMessage
+                            )
+                        )
+                    }) {
+                        Text(text = "Send")
                     }
-                }
+                },
+                shape = CircleShape,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                ),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             )
         }
     }
