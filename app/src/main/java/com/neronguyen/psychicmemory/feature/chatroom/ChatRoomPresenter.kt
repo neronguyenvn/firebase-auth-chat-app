@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlin.time.Duration.Companion.hours
 
 class ChatRoomPresenter(
     private val chatRepository: ChatRepository,
@@ -46,12 +47,23 @@ class ChatRoomPresenter(
             inputMessage = inputMessage
         ) { event ->
             when (event) {
+
                 ConnectSocket -> coroutineScope.launch {
                     launch {
                         Firebase.messaging.subscribeToTopic("chat").await()
                     }
+
                     val chatHistory = chatRepository.getChatHistory()
-                    messages.addAll(chatHistory.reversed())
+                    val iteratedChatHistory = chatHistory
+                        .mapIndexed { index, message ->
+                            shouldShowInfo(index, message, chatHistory)
+                        }
+                        .mapIndexed { index, message ->
+                            shouldShowTimestamp(index, message, chatHistory)
+                        }
+
+
+                    messages.addAll(iteratedChatHistory.reversed())
                     chatRepository.connectToSocket()
                         .onEach { message -> messages.add(0, message) }
                         .launchIn(coroutineScope)
@@ -70,6 +82,45 @@ class ChatRoomPresenter(
                 }
             }
         }
+    }
+
+    private fun shouldShowInfo(
+        index: Int,
+        message: ChatMessage,
+        chatHistory: List<ChatMessage>
+    ): ChatMessage {
+
+        if (message is ChatMessage.CurrentUserMessage) {
+            return message
+        }
+
+        message as ChatMessage.OtherMessage
+        if (index == 0) {
+            return message.copy(shouldShowInfo = true)
+        }
+
+        if (message.senderInfo.uid != chatHistory[index - 1].senderInfo.uid) {
+            return message.copy(shouldShowInfo = true)
+        }
+
+        return message.copy(shouldShowInfo = false)
+    }
+
+    private fun shouldShowTimestamp(
+        index: Int,
+        message: ChatMessage,
+        chatHistory: List<ChatMessage>
+    ): ChatMessage {
+
+        if (index == 0) {
+            return message.copyNewShouldShowTimestamp(true)
+        }
+
+        if ((message.timestamp - chatHistory[index - 1].timestamp) > 1.hours) {
+            return message.copyNewShouldShowTimestamp(true)
+        }
+
+        return message.copyNewShouldShowTimestamp(false)
     }
 
     class Factory(
