@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkMessage(
-    val userId: String,
+    val uid: String,
     val username: String,
     val photoUrl: String,
     val content: String,
@@ -17,5 +17,5 @@ fun NetworkMessage.asExternalModel(currentUserId: String) = ChatMessage(
     username = username,
     photoUrl = photoUrl,
     content = content,
-    sender = if (userId == currentUserId) CURRENT_USER else OTHER
+    sender = if (uid == currentUserId) CURRENT_USER else OTHER
 )

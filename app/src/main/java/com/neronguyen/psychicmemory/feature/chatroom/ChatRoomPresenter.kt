@@ -12,6 +12,7 @@ import com.google.firebase.messaging.ktx.messaging
 import com.neronguyen.psychicmemory.core.data.ChatRepository
 import com.neronguyen.psychicmemory.core.firebase.auth.GoogleAuthClient
 import com.neronguyen.psychicmemory.core.firebase.util.currentUser
+import com.neronguyen.psychicmemory.core.model.ChatMessage
 import com.neronguyen.psychicmemory.feature.auth.AuthScreen
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.ConnectSocket
 import com.neronguyen.psychicmemory.feature.chatroom.ChatRoomScreen.Event.InputMessage
@@ -36,7 +37,7 @@ class ChatRoomPresenter(
     override fun present(): ChatRoomScreen.State {
         val coroutineScope = rememberCoroutineScope()
 
-        val messages = remember { mutableStateListOf<String>() }
+        val messages = remember { mutableStateListOf<ChatMessage>() }
         var inputMessage by remember { mutableStateOf("") }
 
         return ChatRoomScreen.State(
@@ -50,14 +51,9 @@ class ChatRoomPresenter(
                         Firebase.messaging.subscribeToTopic("chat").await()
                     }
                     val chatHistory = chatRepository.getChatHistory()
-                    messages.addAll(0, chatHistory.map { "[${it.username}]: ${it.content}" })
+                    messages.addAll(chatHistory.reversed())
                     chatRepository.connectToSocket()
-                        .onEach { message ->
-                            messages.add(
-                                0,
-                                "[${message.username}]: ${message.content}"
-                            )
-                        }
+                        .onEach { message -> messages.add(0, message) }
                         .launchIn(coroutineScope)
                 }
 
