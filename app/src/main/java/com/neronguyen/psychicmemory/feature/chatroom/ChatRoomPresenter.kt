@@ -7,8 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.neronguyen.psychicmemory.core.common.util.observeLifecycle
 import com.neronguyen.psychicmemory.core.data.ChatRepository
 import com.neronguyen.psychicmemory.core.firebase.auth.GoogleAuthClient
 import com.neronguyen.psychicmemory.core.firebase.util.currentUser
@@ -36,6 +38,12 @@ class ChatRoomPresenter(
     @Composable
     override fun present(): ChatRoomScreen.State {
         val coroutineScope = rememberCoroutineScope()
+        val lifecycleOwner = LocalLifecycleOwner.current
+
+        lifecycleOwner.observeLifecycle(
+            doOnStart = { coroutineScope.launch { chatRepository.connectToSocket() } },
+            doOnStop = { coroutineScope.launch { chatRepository.disconnectFromSocket() } },
+        )
 
         var inputMessage by remember { mutableStateOf("") }
         val chatHistory by chatRepository.getChatHistoryStream()
@@ -59,11 +67,8 @@ class ChatRoomPresenter(
             when (event) {
 
                 ConnectSocket -> coroutineScope.launch {
-                    launch {
-                        Firebase.messaging.subscribeToTopic("chat").await()
-                    }
-                    chatRepository.refreshChatHistory()
-                    chatRepository.connectToSocket()
+                    launch { Firebase.messaging.subscribeToTopic("chat").await() }
+                    launch { chatRepository.refreshChatHistory() }
                 }
 
                 is InputMessage -> inputMessage = event.value
@@ -76,7 +81,7 @@ class ChatRoomPresenter(
                 is SignOut -> coroutineScope.launch {
                     launch {
                         launch { googleAuthClient.signOut() }
-                        launch { chatRepository.disconnect() }
+                        launch { chatRepository.disconnectFromSocket() }
                     }.join()
                     navigator.resetRoot(AuthScreen)
                 }

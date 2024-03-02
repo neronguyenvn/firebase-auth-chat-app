@@ -9,5 +9,7 @@ interface LocalDataSource {
 
     suspend fun insertMessages(messages: List<MessageEntity>)
 
+    suspend fun insertMessage(message: MessageEntity)
+
     suspend fun deleteAllMessages()
 }

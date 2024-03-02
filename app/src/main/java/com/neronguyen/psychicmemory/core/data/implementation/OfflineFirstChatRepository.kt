@@ -8,7 +8,6 @@ import com.neronguyen.psychicmemory.core.firebase.util.getToken
 import com.neronguyen.psychicmemory.core.model.ChatMessage
 import com.neronguyen.psychicmemory.core.network.NetworkDataSource
 import com.neronguyen.psychicmemory.core.network.model.asEntity
-import com.neronguyen.psychicmemory.core.network.model.asExternalModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -21,13 +20,14 @@ class OfflineFirstChatRepository(
     private val ioDispatcher: CoroutineDispatcher
 ) : ChatRepository {
 
-
-    override suspend fun connectToSocket(): Flow<ChatMessage> {
-        return withContext(ioDispatcher) {
+    override suspend fun connectToSocket() {
+        withContext(ioDispatcher) {
             networkDataSource.connectToSocket(
                 url = "ws://192.168.1.12:8080/chat",
                 token = getToken()
-            ).map { it.asExternalModel(currentUser.id) }
+            ).collect { message ->
+                localDataSource.insertMessage(message.asEntity())
+            }
         }
     }
 
@@ -37,7 +37,7 @@ class OfflineFirstChatRepository(
         }
     }
 
-    override suspend fun disconnect() {
+    override suspend fun disconnectFromSocket() {
         withContext(ioDispatcher) {
             networkDataSource.disconnectSocket()
         }

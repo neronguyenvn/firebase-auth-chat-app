@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
 
-    suspend fun connectToSocket(): Flow<ChatMessage>
+    suspend fun connectToSocket()
 
     suspend fun sendMessage(message: String)
 
-    suspend fun disconnect()
+    suspend fun disconnectFromSocket()
 
     fun getChatHistoryStream(): Flow<List<ChatMessage>>
 

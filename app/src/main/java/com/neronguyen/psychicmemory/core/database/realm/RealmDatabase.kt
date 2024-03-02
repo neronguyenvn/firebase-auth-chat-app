@@ -23,6 +23,10 @@ class RealmDatabase(private val realm: Realm) : LocalDataSource {
         }
     }
 
+    override suspend fun insertMessage(message: MessageEntity) {
+        realm.write { copyToRealm(message) }
+    }
+
     override suspend fun deleteAllMessages() {
         realm.write {
             val chatHistory = query<MessageEntity>()
