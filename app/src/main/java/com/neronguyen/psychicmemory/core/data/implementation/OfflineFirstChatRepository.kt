@@ -1,5 +1,6 @@
 package com.neronguyen.psychicmemory.core.data.implementation
 
+import com.neronguyen.psychicmemory.core.common.constant.Endpoint
 import com.neronguyen.psychicmemory.core.data.ChatRepository
 import com.neronguyen.psychicmemory.core.database.LocalDataSource
 import com.neronguyen.psychicmemory.core.database.model.asExternalModel
@@ -23,7 +24,7 @@ class OfflineFirstChatRepository(
     override suspend fun connectToSocket() {
         withContext(ioDispatcher) {
             networkDataSource.connectToSocket(
-                url = "ws://192.168.1.12:8080/chat",
+                url = Endpoint.CHAT_WEBSOCKET,
                 token = getToken()
             ).collect { message ->
                 localDataSource.insertMessage(message.asEntity())
@@ -56,7 +57,7 @@ class OfflineFirstChatRepository(
         withContext(ioDispatcher) {
             val chatHistory = async {
                 networkDataSource.getChatHistory(
-                    url = "http://192.168.1.12:8080/chatHistory",
+                    url = Endpoint.CHAT_HISTORY,
                     token = getToken()
                 )
             }
