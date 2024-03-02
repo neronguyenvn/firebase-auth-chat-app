@@ -77,7 +77,10 @@ class ChatRoomPresenter(
                 }
 
                 is SignOut -> coroutineScope.launch {
-                    googleAuthClient.signOut()
+                    launch {
+                        launch { googleAuthClient.signOut() }
+                        launch { chatRepository.disconnect() }
+                    }.join()
                     navigator.resetRoot(AuthScreen)
                 }
             }
