@@ -6,13 +6,14 @@ androidxComposeCompiler = "1.5.9"
 androidxLifecycle = "2.7.0"
 circuit = "0.19.1"
 coil = "2.6.0"
-firebaseBom = "32.7.2"
+firebaseBom = "32.7.3"
 gmsPlugin = "4.4.1"
 googleAuth = "21.0.0"
 koinBom = "3.5.3"
 kotlin = "1.9.22"
 kotlinxDatetime = "0.5.0"
 ktor = "2.3.8"
+realm = "1.13.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -34,6 +35,7 @@ ktor-client-contentNegotiation = { group = "io.ktor", name = "ktor-client-conten
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+realm-core = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -41,3 +43,4 @@ gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+realm = { id = "io.realm.kotlin", version.ref = "realm" }

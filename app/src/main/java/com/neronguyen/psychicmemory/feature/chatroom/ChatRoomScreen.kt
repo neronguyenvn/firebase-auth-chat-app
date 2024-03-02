@@ -44,8 +44,8 @@ data object ChatRoomScreen : Screen {
 
     data class State(
         val currentUser: User,
-        val messages: List<ChatMessage>,
         val inputMessage: String,
+        val chatHistory: List<ChatMessage>,
         val eventSink: (Event) -> Unit
     ) : CircuitUiState
 
@@ -83,7 +83,7 @@ fun ChatRoomUi(state: ChatRoomScreen.State, modifier: Modifier = Modifier) {
                     bottom = 16.dp
                 ),
             ) {
-                items(state.messages) { message ->
+                items(state.chatHistory) { message ->
                     when (message) {
                         is ChatMessage.CurrentUserMessage -> CurrentUserMessageCard(message)
                         is ChatMessage.OtherMessage -> OtherMessageCard(

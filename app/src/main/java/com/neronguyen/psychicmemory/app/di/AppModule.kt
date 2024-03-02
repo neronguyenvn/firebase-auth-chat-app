@@ -1,8 +1,9 @@
 package com.neronguyen.psychicmemory.app.di
 
-import com.neronguyen.psychicmemory.core.firebase.auth.di.authModule
 import com.neronguyen.psychicmemory.core.common.coroutine.coroutineModule
 import com.neronguyen.psychicmemory.core.data.di.dataModule
+import com.neronguyen.psychicmemory.core.database.di.databaseModule
+import com.neronguyen.psychicmemory.core.firebase.auth.di.authModule
 import com.neronguyen.psychicmemory.core.network.di.networkModule
 import org.koin.dsl.module
 
@@ -12,6 +13,7 @@ val appModule = module {
         authModule,
         networkModule,
         dataModule,
-        circuitModule
+        circuitModule,
+        databaseModule
     )
 }

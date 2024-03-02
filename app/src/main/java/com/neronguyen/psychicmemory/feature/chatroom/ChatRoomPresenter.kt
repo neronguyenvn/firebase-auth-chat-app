@@ -1,8 +1,8 @@
 package com.neronguyen.psychicmemory.feature.chatroom
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,8 +22,7 @@ import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.time.Duration.Companion.hours
@@ -38,13 +37,24 @@ class ChatRoomPresenter(
     override fun present(): ChatRoomScreen.State {
         val coroutineScope = rememberCoroutineScope()
 
-        val messages = remember { mutableStateListOf<ChatMessage>() }
         var inputMessage by remember { mutableStateOf("") }
+        val chatHistory by chatRepository.getChatHistoryStream()
+            .map { chatHistory ->
+                chatHistory
+                    .mapIndexed { index, message ->
+                        shouldShowInfo(index, message, chatHistory)
+                    }
+                    .mapIndexed { index, message ->
+                        shouldShowTimestamp(index, message, chatHistory)
+                    }
+                    .reversed()
+            }
+            .collectAsState(initial = emptyList())
 
         return ChatRoomScreen.State(
             currentUser = currentUser,
-            messages = messages,
-            inputMessage = inputMessage
+            inputMessage = inputMessage,
+            chatHistory = chatHistory,
         ) { event ->
             when (event) {
 
@@ -52,21 +62,8 @@ class ChatRoomPresenter(
                     launch {
                         Firebase.messaging.subscribeToTopic("chat").await()
                     }
-
-                    val chatHistory = chatRepository.getChatHistory()
-                    val iteratedChatHistory = chatHistory
-                        .mapIndexed { index, message ->
-                            shouldShowInfo(index, message, chatHistory)
-                        }
-                        .mapIndexed { index, message ->
-                            shouldShowTimestamp(index, message, chatHistory)
-                        }
-
-
-                    messages.addAll(iteratedChatHistory.reversed())
+                    chatRepository.refreshChatHistory()
                     chatRepository.connectToSocket()
-                        .onEach { message -> messages.add(0, message) }
-                        .launchIn(coroutineScope)
                 }
 
                 is InputMessage -> inputMessage = event.value

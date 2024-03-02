@@ -11,5 +11,7 @@ interface ChatRepository {
 
     suspend fun disconnect()
 
-    suspend fun getChatHistory(): List<ChatMessage>
+    fun getChatHistoryStream(): Flow<List<ChatMessage>>
+
+    suspend fun refreshChatHistory()
 }

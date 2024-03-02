@@ -1,6 +1,10 @@
 package com.neronguyen.psychicmemory.core.network.model
 
+import com.neronguyen.psychicmemory.core.database.model.MessageEntity
 import com.neronguyen.psychicmemory.core.model.ChatMessage
+import com.neronguyen.psychicmemory.core.model.SenderInfo
+import com.neronguyen.psychicmemory.core.model.asEntity
+import io.realm.kotlin.types.RealmInstant
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
@@ -9,14 +13,6 @@ data class NetworkMessage(
     val content: String,
     val timestamp: Instant,
     val senderInfo: SenderInfo
-)
-
-@Serializable
-data class SenderInfo(
-    val uid: String,
-    val name: String,
-    val email: String,
-    val photoUrl: String,
 )
 
 fun NetworkMessage.asExternalModel(currentUserId: String): ChatMessage {
@@ -29,4 +25,10 @@ fun NetworkMessage.asExternalModel(currentUserId: String): ChatMessage {
         senderInfo = senderInfo,
         timestamp = timestamp
     )
+}
+
+fun NetworkMessage.asEntity() = MessageEntity().apply {
+    content = this@asEntity.content
+    timestamp = RealmInstant.from(this@asEntity.timestamp.epochSeconds, 0)
+    senderInfo = this@asEntity.senderInfo.asEntity()
 }

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.gms)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.realm)
 }
 
 android {
@@ -74,4 +75,6 @@ dependencies {
     implementation(libs.coil.compose)
     // Kotlinx libraries
     implementation(libs.kotlinx.datetime)
+    // Realm for local database
+    implementation(libs.realm.core)
 }

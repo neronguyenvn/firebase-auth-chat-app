@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.gms) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.realm) apply false
 }

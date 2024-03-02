@@ -1,7 +1,10 @@
 package com.neronguyen.psychicmemory.core.model
 
-import com.neronguyen.psychicmemory.core.network.model.SenderInfo
+import com.neronguyen.psychicmemory.core.database.model.MessageEntity
+import com.neronguyen.psychicmemory.core.database.model.SenderInfoEntity
+import io.realm.kotlin.types.RealmInstant
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
 
 sealed class ChatMessage {
 
@@ -32,4 +35,26 @@ sealed class ChatMessage {
             is CurrentUserMessage -> this.copy(shouldShowTimestamp = should)
         }
     }
+}
+
+@Serializable
+data class SenderInfo(
+    val uid: String,
+    val name: String,
+    val email: String,
+    val photoUrl: String,
+)
+
+
+fun ChatMessage.asEntity() = MessageEntity().apply {
+    content = this@asEntity.content
+    timestamp = RealmInstant.from(this@asEntity.timestamp.epochSeconds, 0)
+    senderInfo = this@asEntity.senderInfo.asEntity()
+}
+
+fun SenderInfo.asEntity() = SenderInfoEntity().apply {
+    uid = this@asEntity.uid
+    name = this@asEntity.name
+    email = this@asEntity.email
+    photoUrl = this@asEntity.photoUrl
 }
