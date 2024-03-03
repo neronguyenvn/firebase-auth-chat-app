@@ -59,6 +59,8 @@ class AuthPresenter(
                     navigator.resetRoot(ChatRoomScreen)
                     isLoading = false
                 }
+            } else {
+                isLoading = false
             }
         }
     }
