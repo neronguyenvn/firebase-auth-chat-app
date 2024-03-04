@@ -46,8 +46,5 @@ is driven by a passion for learning and innovation.
 - **Single Chat Room**: Connect with others in one shared space,
   with access to the entire chat history .
 
-### Demo
-
-- Complete Flow:
-
-- Notification Flow: 
+## 🎥 Demo
+https://github.com/nero240399/firebase-auth-chat-app/assets/50225603/d09eec54-0efb-48d0-81c9-9da19c4e908d
