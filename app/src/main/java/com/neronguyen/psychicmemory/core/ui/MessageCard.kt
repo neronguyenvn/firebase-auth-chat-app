@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.neronguyen.psychicmemory.core.model.ChatMessage
 
-private const val MESSAGE_CARD_CORNER = 20
+private val MessageCardCorner = 10.dp
 private val MessageTextModifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
 
 @Composable
@@ -30,10 +30,10 @@ fun CurrentUserMessageCard(message: ChatMessage) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         Surface(
             shape = RoundedCornerShape(
-                MESSAGE_CARD_CORNER,
-                MESSAGE_CARD_CORNER,
-                0,
-                MESSAGE_CARD_CORNER
+                MessageCardCorner,
+                MessageCardCorner,
+                0.dp,
+                MessageCardCorner
             ),
             color = MaterialTheme.colorScheme.primary,
         ) {
@@ -75,10 +75,10 @@ fun OtherMessageCard(message: ChatMessage, shouldShowInfo: Boolean) {
 private fun OtherMessageText(content: String) {
     Surface(
         shape = RoundedCornerShape(
-            0,
-            MESSAGE_CARD_CORNER,
-            MESSAGE_CARD_CORNER,
-            MESSAGE_CARD_CORNER
+            0.dp,
+            MessageCardCorner,
+            MessageCardCorner,
+            MessageCardCorner
         ),
         color = MaterialTheme.colorScheme.secondaryContainer,
     ) {
