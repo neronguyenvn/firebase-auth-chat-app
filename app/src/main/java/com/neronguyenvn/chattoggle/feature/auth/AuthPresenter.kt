@@ -1,6 +1,6 @@
 package com.neronguyenvn.chattoggle.feature.auth
 
-import androidx.activity.ComponentActivity
+import android.app.Activity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -50,10 +50,12 @@ class AuthPresenter(
     private fun rememberGoogleAuthLauncher(
         coroutineScope: CoroutineScope = rememberCoroutineScope()
     ): ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult> {
+
         return rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartIntentSenderForResult()
         ) { result ->
-            if (result.resultCode == ComponentActivity.RESULT_OK) {
+
+            if (result.resultCode == Activity.RESULT_OK) {
                 coroutineScope.launch {
                     googleAuthClient.signInWithIntent(intent = result.data ?: return@launch)
                     navigator.resetRoot(ChatRoomScreen)

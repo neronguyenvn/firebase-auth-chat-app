@@ -1,19 +1,18 @@
 [versions]
-androidGradlePlugin = "8.2.2"
-androidxActivity = "1.8.2"
-androidxComposeBom = "2024.02.01"
-androidxComposeCompiler = "1.5.9"
-androidxLifecycle = "2.7.0"
-circuit = "0.19.1"
-coil = "2.6.0"
-firebaseBom = "32.7.3"
-gmsPlugin = "4.4.1"
-googleAuth = "21.0.0"
+androidGradlePlugin = "8.6.0"
+androidxActivity = "1.9.1"
+androidxComposeBom = "2024.08.00"
+androidxLifecycle = "2.8.4"
+circuit = "0.23.1"
+coil = "2.7.0"
+firebaseBom = "33.2.0"
+gmsPlugin = "4.4.2"
+googleAuth = "21.2.0"
 koinBom = "3.5.3"
-kotlin = "1.9.22"
-kotlinxDatetime = "0.5.0"
-ktor = "2.3.8"
-realm = "1.13.0"
+kotlin = "2.0.10"
+kotlinxDatetime = "0.6.1"
+ktor = "2.3.10"
+realm = "2.1.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -41,6 +40,7 @@ realm-core = { group = "io.realm.kotlin", name = "library-base", version.ref = "
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 realm = { id = "io.realm.kotlin", version.ref = "realm" }
