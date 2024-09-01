@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Psychic Memory"
+rootProject.name = "ChatToggle"
 include(":app")
  

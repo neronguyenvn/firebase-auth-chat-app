@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.neronguyen.psychicmemory"
+    namespace = "com.neronguyenvn.chattoggle"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.neronguyen.psychicmemory"
+        applicationId = "com.neronguyenvn.chattoggle"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
